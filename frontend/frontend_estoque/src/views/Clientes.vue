@@ -50,7 +50,7 @@ async function salvar() {
     limpar()
     carregar()
   }catch(error: any) {
-     toast.error(error.response?.data.detalhes)
+     toast.error(error.response?.data?.error)
   }
 }
 
