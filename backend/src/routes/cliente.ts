@@ -17,11 +17,7 @@ router.post("/", async (req: Request, res: Response) => {
   }  catch (error: any) {
     
     if (error.type === "VALIDACAO") {
-      console.log(error.errors)
-      return res.status(400).json({
-        error: "Dados inválidos",
-        detalhes: error.errors
-      });
+      return res.status(400).json({ error: error.errors });
     }
 
     if (error.message === "CPF_JA_CADASTRADO") {
