@@ -1,0 +1,88 @@
+# =============================
+# Node
+# =============================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =============================
+# Environment variables
+# =============================
+.env
+.env.local
+.env.*.local
+
+# =============================
+# Logs
+# =============================
+*.log
+logs/
+*.log.*
+/backend/logs/
+frontend/frontend_estoque/logs/
+
+# =============================
+# Build / dist
+# =============================
+/backend/dist/
+/frontend/frontend_estoque/dist/
+/frontend/frontend_estoque/.vite/
+
+# =============================
+# TypeScript
+# =============================
+*.tsbuildinfo
+
+# =============================
+# IDE / Editor
+# =============================
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# =============================
+# OS generated
+# =============================
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# =============================
+# Docker
+# =============================
+docker-compose.override.yml
+**/docker/*.log
+**/docker/tmp/
+**/docker/node_modules/
+
+# =============================
+# Misc / temp
+# =============================
+*.zip
+*.tgz
+*.bak
+*.tmp
+
+# =============================
+# Specific Frontend / Vite / Vue
+# =============================
+frontend/frontend_estoque/node_modules/
+frontend/frontend_estoque/.cache/
+frontend/frontend_estoque/.temp/
+frontend/frontend_estoque/dist/
+frontend/frontend_estoque/.vite/
+frontend/frontend_estoque/*.local
+
+# =============================
+# Specific Backend
+# =============================
+backend/node_modules/
+backend/dist/
+backend/*.local
