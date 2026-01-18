@@ -33,12 +33,11 @@ export async function createVenda(venda: VendaBase, conn?: PoolConnection): Prom
   }
 }
 
-export async function getAllVendas(conn?: PoolConnection): Promise<Venda[]> {
+export async function getAllVendas( idCliente?: number, conn?: PoolConnection): Promise<Venda[]> {
   const connection = conn || await pool.getConnection();
 
   try {
-    const [rows] = await connection.query(
-      `SELECT
+    let query =      `SELECT
         v.id AS id,
         v.id_cliente AS idCliente,
         c.nome AS nomeCliente,
@@ -55,7 +54,15 @@ export async function getAllVendas(conn?: PoolConnection): Promise<Venda[]> {
       LEFT JOIN formas_pagamento f ON f.id = v.id_forma_pagamento
       LEFT JOIN item_venda i ON v.id = i.id_venda
       LEFT JOIN produtos p ON p.id = i.id_produto`
-    );
+      
+      const params: any[] = [];
+      
+      if (idCliente) {
+        query += ` WHERE v.id_cliente = ?`;
+        params.push(idCliente); // mesmo que seja só 1 número
+      }
+    const [rows] = await connection.query(query, params);
+
     // Transformar em objeto com array de itens
     const vendasMap = new Map<number, Venda>();
     for (const row of rows as any[]) {

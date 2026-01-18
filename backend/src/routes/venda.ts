@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { VendaInput, VendaBase, ItemVendaBase } from "../models/Venda";
-import { realizarVenda, listarVendas, removerVenda, editarVenda } from "../services/vendaService";
+import { realizarVenda, listarVendas, removerVenda, editarVenda, listarVendasPorCliente } from "../services/vendaService";
 
 const router = Router();
 
@@ -29,10 +29,16 @@ router.post("/", async (req, res) => {
 });
 
 // ====== LISTAR VENDAS ======
-router.get("/", async (_req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const vendas = await listarVendas();
-    res.status(200).json(vendas);
+    const idCliente = Number(req.query.clienteId);
+    if (idCliente) {
+      const vendas = await listarVendasPorCliente(idCliente);
+      res.status(200).json(vendas);
+    } else {
+      const vendas = await listarVendas();
+      res.status(200).json(vendas);
+    }
   } catch (error: any) {
     return res.status(500).json({ error: "Erro interno" });
   }
@@ -77,5 +83,9 @@ router.put("/:id", async (req, res) => {
     }
   }
 });
+
+router.get("", async (req, res) => {
+  const idCliente = req.query.clienteId
+})
 
 export default router;

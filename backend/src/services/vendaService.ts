@@ -80,6 +80,9 @@ export async function realizarVenda(venda: VendaBase) {
 export async function listarVendas(): Promise<Venda[]> {
   return await getAllVendas();
 }
+export async function listarVendasPorCliente(idCliente: number){
+  return await getAllVendas(idCliente);
+}
 
 export async function removerVenda(vendaId: number) {
   const connection = await pool.getConnection();
