@@ -79,7 +79,7 @@ onMounted(carregar)
 </script>
 
 <template>
-  <div class="max-w-4xl space-y-6">
+  <div class="max-w-6xl space-y-6">
     <!-- Título -->
     <h1 class="text-2xl font-bold text-gray-800">Forma de Pagamento</h1>
 

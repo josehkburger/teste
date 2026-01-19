@@ -153,7 +153,7 @@ onMounted(carregarTudo)
 </script>
 
 <template>
-  <div class="max-w-4xl space-y-6">
+  <div class="max-w-6xl space-y-6">
     <h1 class="text-2xl font-bold">Vendas</h1>
 
     <!-- FORM -->
