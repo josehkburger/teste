@@ -47,16 +47,17 @@ const form = ref<VendaForm>({
   ]
 })
 
-const editId = ref<number | null>(null)
+const idClienteFiltro = ref<number>(0);
+const editId = ref<number | null>(null);
 const vendaAbertaId = ref<number | null>(null);
 
 // Carregar selects
-async function carregarTudo() {
+async function carregarTudo(clienteId?: number) {
   const [c, p, f, v] = await Promise.all([
     api.get('/cliente'),
     api.get('/produto'),
     api.get('/pagamento'),
-    api.get('/venda')
+    api.get('/venda' + (clienteId ? `?clienteId=${clienteId}` : ''))
   ])
   clientes.value = c.data
   produtos.value = p.data
@@ -88,6 +89,23 @@ function toggleDetalhes(id: number) {
     vendaAbertaId.value === id ? null : id;
 }
 
+function limpar() {
+  editId.value = null
+  form.value = {
+    idCliente: 0,
+    idFormaPagamento: 0,
+    itens: [{ idProduto: 0, quantidade: 1, precoUnitario:0, subtotal: 0 }]
+  }
+}
+
+function limparFiltro() {
+  idClienteFiltro.value = null
+  carregarTudo()
+}
+
+function filtrarVendas() {
+  carregarTudo(idClienteFiltro.value);
+}
 // request
 async function salvar() {
   if (!form.value.idCliente || !form.value.idFormaPagamento || form.value.itens.length === 0) {
@@ -124,20 +142,12 @@ function editarVenda(venda: Venda) {
 }
 
 async function excluir(id: number) {
-if (confirm('Deseja excluir esta venda?')) {
-  await api.delete(`/venda/${id}`)
-  carregarTudo()
-}
-}
-
-function limpar() {
-  editId.value = null
-  form.value = {
-    idCliente: 0,
-    idFormaPagamento: 0,
-    itens: [{ idProduto: 0, quantidade: 1, precoUnitario:0, subtotal: 0 }]
+  if (confirm('Deseja excluir esta venda?')) {
+    await api.delete(`/venda/${id}`)
+    carregarTudo()
   }
 }
+
 
 onMounted(carregarTudo)
 </script>
@@ -208,7 +218,6 @@ onMounted(carregarTudo)
       </div>
     </div>
 
-
     <!-- TABELA -->
     <div class="overflow-x-auto bg-white shadow rounded">
       <table class="min-w-full divide-y divide-gray-200">
@@ -216,7 +225,16 @@ onMounted(carregarTudo)
         <thead class="bg-gray-100">
           <tr>
             <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Venda</th>
-            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Cliente</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                <select 
+                  @change="filtrarVendas" 
+                  v-model="idClienteFiltro" 
+                  class="bg-gray-100 w-full px-2 py-1 rounded"
+                >
+                  <option :value="0">Cliente</option>
+                  <option v-for="c in clientes" :key="c.id" :value="c.id">{{ c.nome }}</option>
+                </select>
+            </th>
             <th class="px-4 py-2 text-right text-sm font-semibold text-gray-700">Total</th>
             <th class="px-4 py-2 text-right text-sm font-medium text-gray-700">Ações</th>
           </tr>
@@ -253,11 +271,11 @@ onMounted(carregarTudo)
                 >
                   Excluir
                 </button>
-   <span
-      class="inline-block text-gray-400 transition-transform duration-200"
-    >
-      ▾
-    </span>
+                  <span
+                      class="inline-block text-gray-400 transition-transform duration-200"
+                    >
+                      ▾
+                    </span>
               </td>
             </tr>
 

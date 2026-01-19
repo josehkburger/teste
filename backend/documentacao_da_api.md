@@ -336,7 +336,30 @@ API REST para gerenciamento de **Clientes**, **Produtos**, **Formas de Pagamento
   }
 ]
 ```
+**GET** `/venda?clienteId=1`
 
+**Response**
+```json
+[
+  {
+    "id": 1,
+    "idCliente": "number",
+    "nomeCliente": "string",
+    "idFormaPagamento": "number",
+    "nomeFormaPagamento": "string",
+    "total": "string",
+    "itens": [
+      {
+        "idProduto": "number",
+        "nomeProduto": "string",
+        "quantidade": "number",
+        "precoUnitario": "string",
+        "subtotal": "string"
+      }
+    ]
+  }
+]
+```
 ---
 
 ### Atualizar venda
